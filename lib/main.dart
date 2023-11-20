@@ -63,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
       case 0:
         page = GeneratorPage();
       case 1:
-        page = Placeholder();
+        page = FavoritePage();
       default:
         throw UnimplementedError('no widget for $selectedIndex');
     }
@@ -99,6 +99,50 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class FavoritePage extends StatelessWidget {
+  const FavoritePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+    var favorites = appState.favorites;
+    var theme = Theme.of(context);
+    var textStyle = TextStyle(color: theme.colorScheme.primary);
+    var buttonStyle = ButtonStyle(backgroundColor: MaterialStateProperty.all(theme.colorScheme.background));
+
+    if (favorites.isEmpty) {
+      return Center(
+        child: Text("No Favorites found"),
+      );
+    }
+
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: favorites
+            .map(
+              (favorite) => Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: ElevatedButton.icon(
+                  style: buttonStyle,
+                  onPressed: () {},
+                  label: Text(
+                    favorite.asLowerCase,
+                    style: textStyle,
+                  ),
+                  icon: Icon(
+                    Icons.favorite,
+                    color: theme.colorScheme.error,
+                  ),
+                ),
+              ),
+            )
+            .toList(),
       ),
     );
   }
